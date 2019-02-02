@@ -15,7 +15,7 @@ class Othercommands(object):
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def fortnite(self, ctx, platform, *, epic_name):
         url = 'https://api.fortnitetracker.com/v1/profile/{}/{}'.format(platform, epic_name)
-        headers = {'TRN-Api-Key': 'insert-api-key'}
+        headers = {'TRN-Api-Key': '5445538b-656f-4b5f-986c-d7b1869c787d'}
         async with aiohttp.ClientSession() as session: 
             async with session.get(url, headers=headers) as resp:
                 req = await resp.json()
@@ -25,7 +25,7 @@ class Othercommands(object):
         try:
             image = Image.open("StatsBOT.png") # the template file for the image it creates
             draw = ImageDraw.Draw(image)
-            fnt = ImageFont.truetype('Evogria_Italic.otf', size=24) # path to font file. I created this to work on Google Cloud VM so your path would be different.
+            fnt = ImageFont.truetype('/home/solorioeclem164/.local/share/fonts/Evogria_Italic.otf', size=24) # path to font file. I created this to work on Google Cloud VM so your path would be different.
             draw.text(xy=(581,27), text=epic_name, fill=(0,0,0), font=fnt)        
 
             solo = req["stats"]["p2"]
@@ -113,18 +113,27 @@ class Othercommands(object):
             await self.bot.send_file(ctx.message.channel, './stats/{}.png'.format(epic_name))
             await session.close()
 
-        except KeyError: # player not found message
-            msg = req["error"]
-            await self.bot.say(msg + ": **{}**".format(epic_name))
+        except KeyError:
 
+            if req["stats"]["p2"] == None: # raises KeyError: 'p2'
+                soloFM = "N/A"
+                fSoloRW = "N/A"
+                soloKillsFM = "N/A"
+                soloKPG = "N/A"
+                soloWinP = "N/A"
+                soloKD = "N/A"
+                fRankSoloRN = "N/A"
 
-    @fortnite.error
+            """msg = req["error"]
+            await self.bot.say(msg + ": **{}**".format(epic_name))"""
+
+    """@fortnite.error
     async def fortnite_error(self, error, ctx): # basically a help command
         if isinstance(error, discord.ext.commands.MissingRequiredArgument):
             embed = discord.Embed(title='Fortnite Help')
             embed.add_field(name="About", value="Fortnite command is used to gather statistics on a fortnite profile. Statistics gathered are from FortniteTracker's API.", inline=False)
             embed.add_field(name="Usage", value="`!fortnite <xbl|pc|psn> <epic_username>`")
-            await self.bot.say(embed=embed)
+            await self.bot.say(embed=embed)"""
 
 
 def setup(bot):
