@@ -15,7 +15,7 @@ class Othercommands(object):
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def fortnite(self, ctx, platform, *, epic_name):
         url = 'https://api.fortnitetracker.com/v1/profile/{}/{}'.format(platform, epic_name)
-        headers = {'TRN-Api-Key': '5445538b-656f-4b5f-986c-d7b1869c787d'}
+        headers = {'TRN-Api-Key': 'api-token-here'}
         async with aiohttp.ClientSession() as session: 
             async with session.get(url, headers=headers) as resp:
                 req = await resp.json()
